@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>MatchLab | Análisis de fútbol</title>
+<style>
+:root{--bg:#0b1220;--panel:#141f30;--line:#29364a;--text:#f4f7fb;--muted:#9eacc0;--green:#38d996;--blue:#6da8ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif}
+header{padding:24px 18px 18px;background:#101827;border-bottom:1px solid var(--line)}
+.brand{font-size:25px;font-weight:850;letter-spacing:-1px}
+.brand span{color:var(--green)}
+.sub{color:var(--muted);font-size:13px;margin-top:5px}
+main{max-width:850px;margin:auto;padding:18px}
+.pill{display:inline-block;background:#17382f;color:var(--green);padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700}
+h1{font-size:25px;margin:16px 0 6px}
+.muted{color:var(--muted);font-size:14px;line-height:1.5}
+nav{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}
+nav button,.filter, .action{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:11px 14px;font-size:14px}
+nav button.active{background:var(--green);color:#062116;border-color:var(--green);font-weight:800}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.panel h2{font-size:17px;margin:0 0 12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px}
+.stat strong{display:block;font-size:22px;color:var(--green)}
+.stat small{color:var(--muted);font-size:11px}
+.match{border-top:1px solid var(--line);padding:14px 0}
+.match:first-of-type{border-top:0}
+.teams{font-weight:750;font-size:15px}
+.league{font-size:12px;color:var(--muted);margin-bottom:7px}
+.metrics{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.metric{background:#202e41;border-radius:8px;padding:7px 9px;font-size:12px}
+.metric b{color:var(--green)}
+.action{cursor:pointer;margin-top:6px}
+.action.primary{background:var(--green);color:#062116;border-color:var(--green);font-weight:750}
+select{width:100%;background:#0b1220;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:12px;margin:7px 0 14px}
+label{font-size:13px;color:var(--muted)}
+.notice{border-left:3px solid #e9b75b;padding:10px 12px;background:#29271f;color:#f1dba8;font-size:12px;line-height:1.5;border-radius:5px}
+.hidden{display:none}
+footer{padding:22px 18px;color:var(--muted);font-size:12px;text-align:center;border-top:1px solid var(--line);margin-top:28px}
+@media(min-width:600px){main{padding:26px}.stats{gap:14px}.panel{padding:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">MATCH<span>LAB</span> ⚽</div>
+  <div class="sub">Plataforma de análisis estadístico de fútbol</div>
+</header>
+<main>
+  <span class="pill">● PROTOTIPO INICIAL</span>
+  <h1>El fútbol, analizado con datos.</h1>
+  <div class="muted">Explora mercados, compara estimaciones y aprende a evaluar probabilidades.</div>
+  <div class="stats">
+    <div class="stat"><strong id="count">3</strong><small>Partidos de ejemplo</small></div>
+    <div class="stat"><strong>3</strong><small>Mercados ilustrativos</small></div>
+    <div class="stat"><strong>0 €</strong><small>Coste del prototipo</small></div>
+  </div>
+  <nav>
+    <button class="active" data-tab="radar">Radar diario</button>
+    <button data-tab="analysis">Analizar partido</button>
+    <button data-tab="method">Metodología</button>
+  </nav>
+
+  <section id="radar">
+    <div class="panel">
+      <h2>Radar de partidos</h2>
+      <div class="muted">Datos ficticios para probar el funcionamiento. No son pronósticos reales.</div>
+      <label for="market">Mercado</label>
+      <select id="market">
+        <option value="goals">Más de 2,5 goles</option>
+        <option value="btts">Marcan ambos equipos</option>
+        <option value="corners">Más de 8,5 córners</option>
+      </select>
+      <div id="matches"></div>
+    </div>
+  </section>
+
+  <section id="analysis" class="hidden">
+    <div class="panel">
+      <h2>Análisis individual</h2>
+      <label for="fixture">Selecciona un partido</label>
+      <select id="fixture">
+        <option value="0">Atlético Norte - Deportivo Sur</option>
+        <option value="1">Unión Azul - Real Verde</option>
+        <option value="2">Ciudad FC - Sporting Central</option>
+      </select>
+      <div id="detail"></div>
+    </div>
+  </section>
+
+  <section id="method" class="hidden">
+    <div class="panel">
+      <h2>Cómo debe funcionar MatchLab</h2>
+      <p class="muted">1. Recopilar resultados históricos de fuentes autorizadas.</p>
+      <p class="muted">2. Calcular probabilidades con modelos estadísticos y datos verificables.</p>
+      <p class="muted">3. Comparar probabilidades estimadas con cuotas reales y calcular el margen de la casa.</p>
+      <p class="muted">4. Registrar predicciones antes del partido y medir resultados para comprobar si el modelo funciona.</p>
+      <div class="notice">Este prototipo todavía no consulta datos reales, cuotas en directo ni modelos predictivos. Las cifras que muestra son inventadas y solo sirven para probar la interfaz.</div>
+    </div>
+  </section>
+</main>
+<footer>MatchLab · Prototipo de desarrollo · Las estimaciones no garantizan resultados.</footer>
+<script>
+const fixtures=[
+ {teams:"Atlético Norte - Deportivo Sur",league:"Liga de ejemplo",goals:64,btts:58,corners:61},
+ {teams:"Unión Azul - Real Verde",league:"Liga de ejemplo",goals:52,btts:55,corners:67},
+ {teams:"Ciudad FC - Sporting Central",league:"Liga de ejemplo",goals:71,btts:63,corners:54}
+];
+const markets={
+ goals:{label:"Más de 2,5 goles",key:"goals"},
+ btts:{label:"Marcan ambos equipos",key:"btts"},
+ corners:{label:"Más de 8,5 córners",key:"corners"}
+};
+function renderMatches(){
+ const key=markets[document.getElementById("market").value];
+ document.getElementById("matches").innerHTML=fixtures.map((f,i)=>`
+ <div class="match">
+  <div class="league">${f.league} · Partido de demostración</div>
+  <div class="teams">${f.teams}</div>
+  <div class="metrics"><span class="metric">${key.label}: <b>${f[key.key]}%</b></span></div>
+  <button class="action" onclick="openDetail(${i})">Ver análisis →</button>
+ </div>`).join("");
+}
+function openDetail(i){
+ document.getElementById("fixture").value=String(i);
+ showTab("analysis");
+ renderDetail();
+}
+function renderDetail(){
+ const f=fixtures[Number(document.getElementById("fixture").value)];
+ document.getElementById("detail").innerHTML=`
+ <h2 style="margin-top:18px">${f.teams}</h2>
+ <div class="muted">Liga de ejemplo · Datos ficticios</div>
+ <div class="metrics">
+  <span class="metric">Más de 2,5 goles <b>${f.goals}%</b></span>
+  <span class="metric">Ambos marcan <b>${f.btts}%</b></span>
+  <span class="metric">Más de 8,5 córners <b>${f.corners}%</b></span>
+ </div>
+ <div class="notice">Estas cifras son demostrativas, no provienen de estadísticas reales ni de un modelo validado.</div>`;
+}
+function showTab(tab){
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+ ["radar","analysis","method"].forEach(id=>document.getElementById(id).classList.toggle("hidden",id!==tab));
+ if(tab==="analysis")renderDetail();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+document.getElementById("market").addEventListener("change",renderMatches);
+document.getElementById("fixture").addEventListener("change",renderDetail);
+renderMatches();
+renderDetail();
+</script>
+</body>
+</html>
